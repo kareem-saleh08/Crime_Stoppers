@@ -1,0 +1,246 @@
+---
+title: "Project"
+author: "Kareem Saleh"
+date: "2024-04-20"
+output: word_document
+---
+
+```{r}
+San_Jose <- read.csv("D:/Stat 4355 Project/Arrests_2015-2020.csv",header=TRUE)
+Dallas <- read.csv("D:/Stat 4355 Project/Police_Arrests.csv",header=TRUE)
+
+Gender_2 <- San_Jose$SEX
+San_Jose_m_index = which(Gender_2 == "M")
+
+San_Jose_f_index <- which(Gender_2 == "F")
+
+Gender_2[San_Jose_m_index] = "Male"
+Gender_2[San_Jose_f_index] = "Female"
+
+
+
+
+```
+```{r}
+install.packages("ggplot2") 
+install.packages("treemapify") 
+  
+# Importing required library 
+library(ggplot2) 
+library(treemapify)
+
+
+```
+
+
+```{r}
+library(ggplot2) 
+library(treemapify)
+
+Gender_1 <- Dallas$Arrestee.Sex
+
+Dallas_m_index = which(Gender_1 == "Male")
+
+Dallas_f_index <- which(Gender_1 == "Female")
+
+Race_1 <- Dallas$Arrestee.Race
+
+Gender=c("Male","Female")
+
+Number_1=c(length(Gender_1[Dallas_m_index]),length(Gender_1[Dallas_f_index]))
+
+total <- length(Dallas$Arrestee.Sex)
+
+percentages <- round((Number_1 / total ) *100 , 2)
+
+df_1<- data.frame(Gender,Number_1)
+
+ggplot(df_1, aes(area = Number_1, fill = Gender, label = percentages)) + geom_treemap()  +  geom_treemap_text(colour = "white",place = "centre",size = 20)+ ggtitle("Dallas Crimes classified by Gender")
+
+
+
+```
+
+```{r}
+
+library(ggplot2) 
+library(treemapify)
+
+Number_2=c(length(Gender_2[San_Jose_m_index]),length(Gender_2[San_Jose_f_index]))
+           
+df_2<- data.frame(Gender, Number_2 )
+
+total <- length(San_Jose$SEX)
+
+percentages <- round((Number_2 / total ) *100 , 2)
+
+
+ggplot(df_2, aes(area = Number_2, fill = Gender, label = percentages)) + geom_treemap()  +  geom_treemap_text(colour = "white",place = "centre",size = 20)+  ggtitle("San Jose Crimes classified by Gender")
+
+Number_2
+```
+
+
+```{r}
+library(ggplot2) 
+library(treemapify)
+
+Gender_1 <- Dallas$Arrestee.Sex
+
+Dallas_m_index = which(Gender_1 == "Male")
+
+Dallas_f_index <- which(Gender_1 == "Female")
+
+Gender=c(rep("Male",4),rep("Female",4))
+
+Race_1 <- c("White","Black","Hispanic or Latino","Asian")
+
+Number_1=c(length(Gender_1[Dallas_m_index]),length(Gender_1[Dallas_f_index]))
+
+total <- length(Dallas$Arrestee.Sex)
+
+percentages <- round((Number_1 / total ) *100 , 2)
+
+df_1<- data.frame(Gender,Number_1)
+
+ggplot(df_1, aes(area = Number_1, fill = Gender, label = percentages,subgroup=Race_1)) + geom_treemap()  +  geom_treemap_text(colour = "white",place = "centre",size = 20) 
+
+
+```
+
+
+```{r}
+
+library(ggplot2)
+
+Race_Dallas <- Dallas$Arrestee.Race
+
+Dallas_b_index = which(Race_Dallas == "Black")
+
+Dallas_w_index <- which(Race_Dallas == "White")
+
+Dallas_l_index = which(Race_Dallas == "Hispanic or Latino")
+
+Dallas_a_index <- which(Race_Dallas == "Asian")
+
+val_b <- length(Race_Dallas[Dallas_b_index])
+
+val_w <- length(Race_Dallas[Dallas_w_index])
+
+val_l <- length(Race_Dallas[Dallas_l_index])
+
+val_a <- length(Race_Dallas[Dallas_a_index])
+
+categ <- c("Black", "White", "Hispanic or Latino", "Asian")
+
+val <- c(val_b, val_w, val_l, val_a)
+
+per <- round((val / length(Race_Dallas)) *100,2)
+
+#percent <- c(,2,3,4)
+
+df3 <- data.frame(categ,val)
+
+ggplot(, aes(area = val, fill = categ, label = per)) + geom_treemap()  +  geom_treemap_text(colour = "white",place = "centre",size = 20) + ggtitle("Dallas Crimes classified by Race")
+
+
+```
+```{r}
+
+library(ggplot2)
+
+Race_San_Jose <- San_Jose$RACE
+
+Dallas_b_index = which(Race_Dallas == "Black")
+
+Dallas_w_index <- which(Race_Dallas == "White")
+
+Dallas_l_index = which(Race_Dallas == "Hispanic or Latino")
+
+Dallas_a_index <- which(Race_Dallas == "Asian")
+
+val_b <- length(Race_Dallas[Dallas_b_index])
+
+val_w <- length(Race_Dallas[Dallas_w_index])
+
+val_l <- length(Race_Dallas[Dallas_l_index])
+
+val_a <- length(Race_Dallas[Dallas_a_index])
+
+categ <- c("Black", "White", "Hispanic or Latino", "Asian")
+
+val <- c(val_b, val_w, val_l, val_a)
+
+per <- round((val / length(Race_Dallas)) *100,2)
+
+#percent <- c(,2,3,4)
+
+df3 <- data.frame(categ,val)
+
+ggplot(, aes(area = val, fill = categ, label = per)) + geom_treemap()  +  geom_treemap_text(colour = "white",place = "centre",size = 20) + ggtitle("Dallas Crimes classified by Race")
+
+
+```
+
+
+
+
+
+```{r}
+
+library(ggplot2)
+
+Dallas_new <- Dallas
+Drug<- as.numeric(Dallas$Drug.Related)
+
+Weapon <- Dallas$Arrest.Weapon
+
+levels(Weapon)
+
+firearm_index <- which(Weapon == "33" | Weapon == "Shotgun" | Weapon == "Gun" | Weapon == "Handgun" | 
+                         Weapon == "Other Firearm" | Weapon == "Firearm (Type Not Stated)")
+
+projectiles_index <- which(Weapon == "Burn" | Weapon == "Rock" | Weapon == "Explosives" | 
+                             Weapon == "Missle/Arrow")
+
+striking_or_sharp_index <- which(Weapon == "Knife - Butcher"| Weapon == "Knife - Other" 
+                                 | Weapon == "Stabbing Instrument" | Weapon == "Knife - Pocket" 
+                                 | Weapon == "Lethal Cutting Instrument" | Weapon == "Club" )
+
+harmful_substance_index <- which(Weapon == "Drugs" | Weapon == "Poison")
+
+vehicle_index <- which(Weapon == "Vehicle")
+
+other_index <- which(Weapon == "Other")
+
+unarmed_index <- which(Weapon == "Unarmed" | Weapon == "None" | 
+                         Weapon == "Strangulation" | Weapon == "THREATS" | Weapon == "Hands/Feet")
+
+Dallas_new$Arrest.Weapon_new <-Dallas_new$Arrest.Weapon
+
+#Dallas_new$Arrest.Weapon_new[firearm_index] <- "Firearm"
+#Dallas_new$Arrest.Weapon_new[projectiles_index] <- "Projectiles"
+#Dallas_new$Arrest.Weapon_new[striking_or_sharp_index] <- "Striking & Sharp"
+#Dallas_new$Arrest.Weapon_new[harmful_substance_index] <- "Substance"
+#Dallas_new$Arrest.Weapon_new[vehicle_index] <- "Vehicle"
+#Dallas_new$Arrest.Weapon_new[other_index] <- "Other" 
+#Dallas_new$Arrest.Weapon_new [unarmed_index] <- "Unarmed"
+
+
+Dallas_new$Arrest.Weapon_new[firearm_index] <- "Armed"
+Dallas_new$Arrest.Weapon_new[projectiles_index] <- "Armed"
+Dallas_new$Arrest.Weapon_new[striking_or_sharp_index] <- "Armed"
+Dallas_new$Arrest.Weapon_new[harmful_substance_index] <- "Armed"
+Dallas_new$Arrest.Weapon_new[vehicle_index] <- "Armed"
+Dallas_new$Arrest.Weapon_new[other_index] <- "Armed" 
+Dallas_new$Arrest.Weapon_new [unarmed_index] <- "Unarmed"
+
+tail(Dallas_new$Arrest.Weapon_new)
+
+
+ggplot(Dallas_new, aes(fill=Drug.Related, y=frequency(Arrest.Weapon_new), x=Arrest.Weapon_new)) +
+ geom_bar(position="stack", stat="identity")+ ggtitle("Stacked Bar Chart to show relationship between drug related crimes and weapons")
+
+
+
+```
